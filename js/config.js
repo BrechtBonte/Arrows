@@ -9,8 +9,8 @@ var _config = {
 	},
 	arrows: {
 		startX: 50,
-		startY: 550,
-		lowerLimit: 590,
+		startY: 250,
+		lowerLimit: 290,
 		gravity: 0.3,
 		maxSpeed: 15,
 		scale: 2,
