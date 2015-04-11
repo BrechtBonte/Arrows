@@ -10,6 +10,8 @@ function Interaction(game)
 	var offsetX = canvasOffset.x;
 	var offsetY = canvasOffset.y;
 
+	var arrows = [];
+
 	this.draw = function()
 	{
 		if (line) {
@@ -69,6 +71,12 @@ function Interaction(game)
 			_getLineStrength(line)
 		);
 		game.addObjectToWorld(arrow);
+
+		arrows.push(arrow);
+		if (arrows.length > _config.arrows.maxCount) {
+			var delArrow = arrows.shift();
+			game.removeObjectFromWorld(delArrow);
+		}
 
 		console.log('Shot at ' + _getLineRotation(line) + ' rads with ' + _getLineStrength(line) + ' force');
 
