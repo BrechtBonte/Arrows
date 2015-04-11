@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>An Arrows Game - yay</title>
+
+	<style>
+
+		html, body {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		}
+
+		.container {
+			width: 900px;
+			margin: 0 auto;
+			background-color: #ddd;
+			height: 100%;
+		}
+
+		h1 {
+			margin: 0;
+		}
+
+		.game-container {
+			width: 800px;
+			margin: 0 auto;
+		}
+
+		#game-canvas {
+			background-color: #fff;
+		}
+	</style>
+</head>
+<body>
+
+	<div class="container">
+		<h1>Gamelicious</h1>
+		<div class="game-container">
+			<canvas id="game-canvas" width="800" height="600"></canvas>
+		</div>
+		<div class="footer">
+			Made by me
+		</div>
+	</div>
+
+	<!-- Load me up some javascript -->
+	<script type="text/javascript" src="js/config.js"></script>
+	<script type="text/javascript" src="js/interaction.js"></script>
+	<script type="text/javascript" src="js/game.js"></script>
+
+	<script type="text/javascript">
+		function loadWindow()
+		{
+			var gameCanvas = document.getElementById('game-canvas'),
+				game = new Game(gameCanvas);
+
+			game.start();
+		}
+
+		window.onload = loadWindow;
+	</script>
+</body>	
+</html>
