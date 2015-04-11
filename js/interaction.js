@@ -47,7 +47,7 @@ function Interaction(game)
 		};
 	}, false);
 
-	canvas.addEventListener('mousemove', function (e)
+	document.addEventListener('mousemove', function (e)
 	{
 		e.preventDefault();
 		e.stopPropagation();
@@ -61,7 +61,7 @@ function Interaction(game)
 		}
 	}, false);
 
-	canvas.addEventListener('mouseup', function (e)
+	document.addEventListener('mouseup', function (e)
 	{
 		e.preventDefault();
 		e.stopPropagation();
