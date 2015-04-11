@@ -55,6 +55,7 @@ function Interaction(game)
 			line.x2 = getXOffset(e.clientX);
 			line.y2 = getYOffset(e.clientY);
 
+			correctForWrongDirection();
 			correctForMaxLength();
 		}
 	}, false);
@@ -63,6 +64,12 @@ function Interaction(game)
 	{
 		e.preventDefault();
 		e.stopPropagation();
+
+		var arrow = new Arrow(
+			_getLineRotation(line),
+			_getLineStrength(line)
+		);
+		game.addObjectToWorld(arrow);
 
 		lastLine = line;
 		line = null;
@@ -106,5 +113,31 @@ function Interaction(game)
 			line.x2 = line.x1 + (maxA * ((line.x2 - line.x1) / a));
 			line.y2 = line.y1 + (maxB * ((line.y2 - line.y1) / b));
 		}
+	}
+
+	function correctForWrongDirection()
+	{
+		if (line.x2 >= line.x1) {
+			line.x2 = line.x1 - 1;
+		}
+	}
+
+	function _getLineStrength(line)
+	{
+		// Pythagoras this shit up
+		var a = Math.abs(line.x1 - line.x2),
+			b = Math.abs(line.y1 - line.y2),
+			c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+
+		return c / _config.interaction.maxLength * _config.arrows.maxSpeed;
+	}
+
+	function _getLineRotation(line)
+	{
+		var a = Math.abs(line.x1 - line.x2),
+			b = Math.abs(line.y1 - line.y2),
+			angle = Math.atan(b / a);
+
+		return angle * ((line.x1 - line.x2) / a) * ((line.y1 - line.y2) / b);
 	}
 }

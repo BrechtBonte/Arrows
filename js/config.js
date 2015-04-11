@@ -6,5 +6,13 @@ var _config = {
 		maxLength: 200,
 		lineColor: '#000',
 		lastLineColor: '#F00'
+	},
+	arrows: {
+		startX: 50,
+		startY: 550,
+		lowerLimit: 590,
+		gravity: 0.3,
+		maxSpeed: 15,
+		scale: 8
 	}
 };
