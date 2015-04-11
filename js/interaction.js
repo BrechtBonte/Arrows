@@ -3,6 +3,7 @@ function Interaction(game)
 {
 	var canvas = game.canvas;
 	var line = null;
+	var lastLine = null;
 
 	var ctx = canvas.getContext("2d");
 	var canvasOffset = getOffset(canvas);
@@ -12,13 +13,22 @@ function Interaction(game)
 	this.draw = function()
 	{
 		if (line) {
-			ctx.lineWidth = _config.interaction.lineWidth;
-			ctx.beginPath();
-			ctx.moveTo(line.x1, line.y1);
-			ctx.lineTo(line.x2, line.y2);
-			ctx.closePath();
-			ctx.stroke();
+			drawLine(line, _config.interaction.lineColor);
 		}
+		if (lastLine) {
+			drawLine(lastLine, _config.interaction.lastLineColor);
+		}
+	}
+
+	function drawLine(l, color)
+	{
+		ctx.lineWidth = _config.interaction.lineWidth;
+		ctx.beginPath();
+		ctx.moveTo(l.x1, l.y1);
+		ctx.lineTo(l.x2, l.y2);
+		ctx.closePath();
+		ctx.strokeStyle = color;
+		ctx.stroke();
 	}
 
 	// Init listeners
@@ -54,6 +64,7 @@ function Interaction(game)
 		e.preventDefault();
 		e.stopPropagation();
 
+		lastLine = line;
 		line = null;
 	}, false);
 
