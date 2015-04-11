@@ -13,6 +13,6 @@ var _config = {
 		lowerLimit: 590,
 		gravity: 0.3,
 		maxSpeed: 15,
-		scale: 8
+		scale: 2
 	}
 };

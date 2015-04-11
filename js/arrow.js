@@ -10,10 +10,6 @@ function Arrow(rotation, speed)
 
 	this.update = function()
 	{
-		if (y >= _config.arrows.lowerLimit) {
-			flying = false;
-		}
-
 		if (flying) {
 
 			vSpeed += vAsc;
@@ -21,6 +17,18 @@ function Arrow(rotation, speed)
 			
 			x += hSpeed;
 			y += vSpeed;
+
+			// Check floor boundry
+			if (y >= _config.arrows.lowerLimit) {
+				flying = false;
+
+				var dY = y - _config.arrows.lowerLimit;
+				if (dY) {
+					var dX = dY / Math.tan(rotation);
+					y -= dY;
+					x -= dX;
+				}
+			}
 		}
 	}
 
@@ -46,10 +54,6 @@ function Arrow(rotation, speed)
 		ctx.lineTo(x - (2 * scale * Math.cos(rotation + headAngle)), y - (2 * scale * Math.sin(rotation + headAngle)));
 		ctx.closePath();
 		ctx.strokeStyle = '#F00';
-		ctx.stroke();
-
-		ctx.beginPath();
-		ctx.arc(x, y, 50, 0, 2*Math.PI);
 		ctx.stroke();
 	}
 }

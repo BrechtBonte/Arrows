@@ -43,7 +43,6 @@ function Interaction(game)
 			x2: getXOffset(e.clientX),
 			y2: getYOffset(e.clientY)
 		};
-		console.log(line);
 	}, false);
 
 	canvas.addEventListener('mousemove', function (e)
@@ -70,6 +69,8 @@ function Interaction(game)
 			_getLineStrength(line)
 		);
 		game.addObjectToWorld(arrow);
+
+		console.log('Shot at ' + _getLineRotation(line) + ' rads with ' + _getLineStrength(line) + ' force');
 
 		lastLine = line;
 		line = null;
@@ -110,15 +111,20 @@ function Interaction(game)
 				maxA = _config.interaction.maxLength * Math.cos(angle),
 				maxB = _config.interaction.maxLength * Math.sin(angle);
 
-			line.x2 = line.x1 + (maxA * ((line.x2 - line.x1) / a));
-			line.y2 = line.y1 + (maxB * ((line.y2 - line.y1) / b));
+			// Check for division by 0
+			if (a) {
+				line.x2 = line.x1 + (maxA * ((line.x2 - line.x1) / a));
+			}
+			if (b) {
+				line.y2 = line.y1 + (maxB * ((line.y2 - line.y1) / b));
+			}
 		}
 	}
 
 	function correctForWrongDirection()
 	{
-		if (line.x2 >= line.x1) {
-			line.x2 = line.x1 - 1;
+		if (line.x2 > line.x1) {
+			line.x2 = line.x1;
 		}
 	}
 
