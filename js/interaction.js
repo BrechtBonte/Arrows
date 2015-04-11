@@ -141,8 +141,16 @@ function Interaction(game)
 	function _getLineRotation(line)
 	{
 		var a = Math.abs(line.x1 - line.x2),
-			b = Math.abs(line.y1 - line.y2),
-			angle = Math.atan(b / a);
+			b = Math.abs(line.y1 - line.y2);
+
+		if (!b) {
+			return 0;
+		}
+		if (!a) {
+			return Math.PI / 2 * ((line.y1 - line.y2) / b);
+		}
+
+		var angle = Math.atan(b / a);
 
 		return angle * ((line.x1 - line.x2) / a) * ((line.y1 - line.y2) / b);
 	}
