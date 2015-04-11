@@ -15,5 +15,11 @@ var _config = {
 		maxSpeed: 15,
 		scale: 2,
 		maxCount: 20
+	},
+	enemies: {
+		startX: 900,
+		startY: 290,
+		speed: 2,
+		scale: 3
 	}
 };

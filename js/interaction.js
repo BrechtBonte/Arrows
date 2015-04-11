@@ -66,22 +66,24 @@ function Interaction(game)
 		e.preventDefault();
 		e.stopPropagation();
 
-		var arrow = new Arrow(
-			_getLineRotation(line),
-			_getLineStrength(line)
-		);
-		game.addObjectToWorld(arrow);
+		if (line) {
+			var arrow = new Arrow(
+				_getLineRotation(line),
+				_getLineStrength(line)
+			);
+			game.addArrowToWorld(arrow);
 
-		arrows.push(arrow);
-		if (arrows.length > _config.arrows.maxCount) {
-			var delArrow = arrows.shift();
-			game.removeObjectFromWorld(delArrow);
+			arrows.push(arrow);
+			if (arrows.length > _config.arrows.maxCount) {
+				var delArrow = arrows.shift();
+				game.removeArrowFromWorld(delArrow);
+			}
+
+			console.log('Shot at ' + _getLineRotation(line) + ' rads with ' + _getLineStrength(line) + ' force');
+
+			lastLine = line;
+			line = null;
 		}
-
-		console.log('Shot at ' + _getLineRotation(line) + ' rads with ' + _getLineStrength(line) + ' force');
-
-		lastLine = line;
-		line = null;
 	}, false);
 
 	function getXOffset(x)
