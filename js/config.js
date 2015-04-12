@@ -9,7 +9,7 @@ var _config = {
 	},
 	arrows: {
 		startX: 50,
-		startY: 250,
+		startY: 234,
 		lowerLimit: 290,
 		gravity: 0.3,
 		maxSpeed: 15,
@@ -17,9 +17,16 @@ var _config = {
 		maxCount: 20
 	},
 	enemies: {
-		startX: 900,
+		startX: 850,
 		startY: 290,
 		speed: 2,
-		scale: 3
+		scale: 3,
+		damage: 5,
+		attackTimeout: 20
+	},
+	base: {
+		x: 47,
+		y: 290,
+		maxHealth: 100
 	}
 };

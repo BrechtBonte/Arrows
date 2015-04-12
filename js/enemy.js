@@ -5,11 +5,16 @@ var Enemy = function()
 		y = _config.enemies.startY,
 		speed = _config.enemies.speed,
 		scale = _config.enemies.scale,
-		moving = true;
+		damage = _config.enemies.damage,
+		countDown = 0;
 
 	this.update = function()
 	{
-		x -= speed;
+		if (countDown > 0) {
+			countDown--;
+		} else {
+			x -= speed;
+		}
 	}
 
 	this.draw = function(ctx)
@@ -43,6 +48,14 @@ var Enemy = function()
 			right: x + (1 * scale),
 			top: y - (8 * scale),
 			bottom: y
+		}
+	}
+
+	this.attack = function(base)
+	{
+		if (countDown == 0) {
+			base.receiveDamage(damage);
+			countDown = _config.enemies.attackTimeout;
 		}
 	}
 }

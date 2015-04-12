@@ -8,11 +8,35 @@ function Game(canvas)
 		intervalId,
 		worldObjects = [],
 		arrows = [],
-		enemies = [];
+		enemies = [],
+		base;
 
 	var detectHits = function()
 	{
 		// Loop backwards to prevent issues with splicing
+		for (var j = enemies.length - 1; j >= 0; j--) {
+			var enemy = enemies[ j ];
+
+			// Check arrows
+			for (var i = arrows.length - 1; i >= 0; i--) {
+				var arrow = arrows[ i ];
+				if (arrow.isFlying()) {
+					if (arrow.hits(enemy)) {
+						game.removeEnemyFromWorld(enemy);
+						game.removeArrowFromWorld(arrow);
+						break;
+					}
+				}
+			}
+
+			// Check base
+			if (base.canBeAttackedBy(enemy)) {
+				enemy.attack(base);
+			}
+		}
+
+
+
 		for (var i = arrows.length - 1; i >= 0; i--) {
 			var arrow = arrows[ i ];
 
@@ -44,6 +68,11 @@ function Game(canvas)
 	var draw = function()
 	{
 		ctx.clearRect(0,0,canvas.width,canvas.height);
+
+		// Draw some scenery
+		ctx.fillStyle = '#960';
+		ctx.fillRect(0, _config.base.y, canvas.width, canvas.height - _config.base.y);
+
 		// Loop backwards to prevent issues with splicing
 		for (var i = worldObjects.length - 1; i >= 0; i--) {
 			var drawObj = worldObjects[ i ];
@@ -63,9 +92,11 @@ function Game(canvas)
 	game.start = function()
 	{
 		var interaction = new Interaction(this);
-		worldObjects.push(interaction);
+		game.addObjectToWorld(interaction);
 
-		var game = this;
+		base = new Base();
+		game.addObjectToWorld(base);
+
 		window.addEventListener('keypress', function(e) {
 			var k = e ? e.which : event.keyCode;
 			if (k == 32) {
