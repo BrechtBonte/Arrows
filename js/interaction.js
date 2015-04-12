@@ -79,8 +79,6 @@ function Interaction(game)
 				game.removeArrowFromWorld(delArrow);
 			}
 
-			console.log('Shot at ' + _getLineRotation(line) + ' rads with ' + _getLineStrength(line) + ' force');
-
 			lastLine = line;
 			line = null;
 		}

@@ -1,6 +1,7 @@
 // General config file
 var _config = {
 	fps: 50,
+	randomSpawnRate: 0.005,
 	interaction: {
 		lineWidth: 2,
 		maxLength: 200,

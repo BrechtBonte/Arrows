@@ -11,7 +11,9 @@ function Game(canvas)
 		enemies = [],
 		base,
 		stopCallback,
-		isRunning = false;
+		isRunning = false,
+		isTestMode = false,
+		score = 0;
 
 	var detectHits = function()
 	{
@@ -26,6 +28,7 @@ function Game(canvas)
 					if (arrow.hits(enemy)) {
 						game.removeEnemyFromWorld(enemy);
 						game.removeArrowFromWorld(arrow);
+						score++;
 						break;
 					}
 				}
@@ -72,8 +75,19 @@ function Game(canvas)
 		}
 	}
 
+	var spawn = function()
+	{
+		if (!isTestMode) {
+			if (Math.random() < _config.randomSpawnRate) {
+				var enemy = new Enemy();
+				game.addEnemyToWorld(enemy);
+			}
+		}
+	}
+
 	var loop = function()
 	{
+		spawn();
 		detectHits();
 		// check if game is still running after hit detection
 		if (isRunning) {
@@ -90,15 +104,19 @@ function Game(canvas)
 		draw();
 	}
 
-	game.start = function()
+	game.start = function(testMode)
 	{
+		isTestMode = testMode;
+		score = 0;
 		var interaction = new Interaction(this);
 		game.addObjectToWorld(interaction);
 
 		base.revive();
 		game.addObjectToWorld(base);
 
-		window.addEventListener('keypress', handleKeyPress);
+		if (isTestMode) {
+			window.addEventListener('keypress', handleKeyPress);
+		}
 
 		intervalId = setInterval(loop, 1000 / _config.fps);
 		isRunning = true;
@@ -120,10 +138,12 @@ function Game(canvas)
 			worldObjects = [];
 			arrows = [];
 			enemies = [];
-			window.removeEventListener('keypress', handleKeyPress);
+			if (isTestMode) {
+				window.removeEventListener('keypress', handleKeyPress);
+			}
 
 			if (stopCallback) {
-				stopCallback();
+				stopCallback(score);
 			}
 		}
 	}

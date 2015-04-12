@@ -56,7 +56,9 @@
 			<canvas id="game-canvas" width="800" height="300"></canvas>
 			<div id="game-overlay">
 				<h2 id="overlay-title">Welcome</h2>
-				<a href="#" id="start-button" class="game-button">start</a>
+				<p id="retry-info" style="display:none">You got <span id="score-container"></span> enemies! retry?</p>
+				<a href="#" id="test-button" class="game-button">test mode</a>
+				<a href="#" id="start-button" class="game-button">random mode</a>
 			</div>
 		</div>
 		<div class="info">
@@ -76,21 +78,31 @@
 		function loadWindow()
 		{
 			var gameCanvas = document.getElementById('game-canvas'),
+				testBtn = document.getElementById('test-button'),
 				startBtn = document.getElementById('start-button'),
 				gameOverlay = document.getElementById('game-overlay'),
 				overlayTitle = document.getElementById('overlay-title'),
+				retryInfo = document.getElementById('retry-info'),
+				scoreContainer = document.getElementById('score-container'),
 				game = new Game(gameCanvas);
 
-			game.onStop(function() {
+			game.onStop(function(score) {
 				overlayTitle.innerHTML = 'Game Over';
-				startBtn.innerHTML = 'retry';
+				scoreContainer.innerHTML = score;
+				retryInfo.style.display = 'block';
 				gameOverlay.style.display = 'block';
+			});
+
+			testBtn.addEventListener('click', function(e) {
+				e.preventDefault();
+				gameOverlay.style.display = 'none';
+				game.start(true);
 			});
 
 			startBtn.addEventListener('click', function(e) {
 				e.preventDefault();
 				gameOverlay.style.display = 'none';
-				game.start();
+				game.start(false);
 			});
 		}
 
