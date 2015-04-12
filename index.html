@@ -2,67 +2,32 @@
 <html lang="en">
 <head>
 	<title>An Arrows Game - yay</title>
-
-	<style>
-
-		html, body {
-			height: 100%;
-			margin: 0;
-			padding: 0;
-		}
-
-		.container {
-			width: 900px;
-			margin: 0 auto;
-			background-color: #ddd;
-			height: 100%;
-		}
-
-		h1 {
-			margin: 0;
-		}
-
-		.game-container {
-			width: 800px;
-			margin: 0 auto;
-			position: relative;
-		}
-
-		#game-canvas {
-			background-color: #fff;
-		}
-
-		#game-overlay {
-			position: absolute;
-			top: 0;
-			left: 0;
-			height: 100%;
-			width: 100%;
-			z-index: 1;
-			opacity: 0.8;
-			background-color: #888;
-		}
-
-		#game-overlay * {
-			opacity: 1;
-		}
-	</style>
+	<link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
+	<div class="header-container">
+		<div class="header">
+			<h1>Arrow defense</h1>
+		</div>
+	</div>
+
 	<div class="container">
-		<h1>Gamelicious</h1>
 		<div class="game-container">
 			<canvas id="game-canvas" width="800" height="300"></canvas>
 			<div id="game-overlay">
-				<h2 id="overlay-title">Welcome</h2>
-				<p id="retry-info" style="display:none">You got <span id="score-container"></span> enemies! retry?</p>
-				<a href="#" id="test-button" class="game-button">test mode</a>
-				<a href="#" id="start-button" class="game-button">random mode</a>
+				<div id="overlay-positioner">
+					<h2 id="overlay-title">Welcome</h2>
+					<p id="retry-info" style="display:none">You got <span id="score-container"></span> enemies! retry?</p>
+					<a href="#" id="test-button" class="game-button">test mode</a>
+					<a href="#" id="start-button" class="game-button">random mode</a>
+				</div>
 			</div>
 		</div>
 		<div class="info">
-			press <span>space</span> to summon ennemies
+			<p>There are 2 game modes:</p>
+			<p><strong>test mode</strong> allows the player to summon ennemies by pressing <span class="input">space</span>.</p>
+			<p><strong>random mode</strong> summons ennemies at random intervals.</p>
 		</div>
 	</div>
 
