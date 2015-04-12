@@ -25,10 +25,26 @@
 		.game-container {
 			width: 800px;
 			margin: 0 auto;
+			position: relative;
 		}
 
 		#game-canvas {
 			background-color: #fff;
+		}
+
+		#game-overlay {
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 100%;
+			z-index: 1;
+			opacity: 0.8;
+			background-color: #888;
+		}
+
+		#game-overlay * {
+			opacity: 1;
 		}
 	</style>
 </head>
@@ -38,6 +54,10 @@
 		<h1>Gamelicious</h1>
 		<div class="game-container">
 			<canvas id="game-canvas" width="800" height="300"></canvas>
+			<div id="game-overlay">
+				<h2 id="overlay-title">Welcome</h2>
+				<a href="#" id="start-button" class="game-button">start</a>
+			</div>
 		</div>
 		<div class="info">
 			press <span>space</span> to summon ennemies
@@ -56,9 +76,22 @@
 		function loadWindow()
 		{
 			var gameCanvas = document.getElementById('game-canvas'),
+				startBtn = document.getElementById('start-button'),
+				gameOverlay = document.getElementById('game-overlay'),
+				overlayTitle = document.getElementById('overlay-title'),
 				game = new Game(gameCanvas);
 
-			game.start();
+			game.onStop(function() {
+				overlayTitle.innerHTML = 'Game Over';
+				startBtn.innerHTML = 'retry';
+				gameOverlay.style.display = 'block';
+			});
+
+			startBtn.addEventListener('click', function(e) {
+				e.preventDefault();
+				gameOverlay.style.display = 'none';
+				game.start();
+			});
 		}
 
 		window.onload = loadWindow;

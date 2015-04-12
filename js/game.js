@@ -9,7 +9,9 @@ function Game(canvas)
 		worldObjects = [],
 		arrows = [],
 		enemies = [],
-		base;
+		base,
+		stopCallback,
+		isRunning = false;
 
 	var detectHits = function()
 	{
@@ -32,23 +34,11 @@ function Game(canvas)
 			// Check base
 			if (base.canBeAttackedBy(enemy)) {
 				enemy.attack(base);
-			}
-		}
-
-
-
-		for (var i = arrows.length - 1; i >= 0; i--) {
-			var arrow = arrows[ i ];
-
-			// Don't check grounded arrows
-			if (arrow.isFlying()) {
-				for (var j = enemies.length - 1; j >= 0; j--) {
-					var enemy = enemies[ j ];
-					if (arrow.hits(enemy)) {
-						game.removeEnemyFromWorld(enemy);
-						game.removeArrowFromWorld(arrow);
-						break;
-					}
+				if (base.isDestroyed()) {
+					// draw new state before stopping
+					draw();
+					game.stop();
+					break;
 				}
 			}
 		}
@@ -85,7 +75,18 @@ function Game(canvas)
 	var loop = function()
 	{
 		detectHits();
-		update();
+		// check if game is still running after hit detection
+		if (isRunning) {
+			update();
+			draw();
+		}
+	}
+
+	var init = function()
+	{
+		base = new Base();
+		game.addObjectToWorld(base);
+
 		draw();
 	}
 
@@ -94,24 +95,42 @@ function Game(canvas)
 		var interaction = new Interaction(this);
 		game.addObjectToWorld(interaction);
 
-		base = new Base();
+		base.revive();
 		game.addObjectToWorld(base);
 
-		window.addEventListener('keypress', function(e) {
-			var k = e ? e.which : event.keyCode;
-			if (k == 32) {
-				game.addEnemyToWorld(new Enemy());
-			}
-		});
+		window.addEventListener('keypress', handleKeyPress);
 
 		intervalId = setInterval(loop, 1000 / _config.fps);
+		isRunning = true;
+	}
+
+	var handleKeyPress = function(e)
+	{
+		var k = e ? e.which : event.keyCode;
+		if (k == 32) {
+			game.addEnemyToWorld(new Enemy());
+		}
 	}
 
 	game.stop = function()
 	{
 		if (intervalId) {
+			isRunning = false;
 			clearInterval(intervalId);
+			worldObjects = [];
+			arrows = [];
+			enemies = [];
+			window.removeEventListener('keypress', handleKeyPress);
+
+			if (stopCallback) {
+				stopCallback();
+			}
 		}
+	}
+
+	game.onStop = function(cb)
+	{
+		stopCallback = cb;
 	}
 
 	game.addObjectToWorld = function(obj)
@@ -155,4 +174,6 @@ function Game(canvas)
 			arr.splice(elementIndex, 1);
 		}
 	}
+
+	init();
 }

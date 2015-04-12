@@ -56,4 +56,14 @@ var Base = function()
 			health = 0;
 		}
 	}
+
+	this.isDestroyed = function()
+	{
+		return health == 0;
+	}
+
+	this.revive = function()
+	{
+		health = _config.base.maxHealth;
+	}
 }
